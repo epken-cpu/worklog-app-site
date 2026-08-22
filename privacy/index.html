@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>隱私權政策 — 工程記工</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><div class="wrap"><div class="logo">工</div><div class="name">工程記工</div></div></header>
+<nav class="top"><div class="wrap">
+  <a href="../">首頁</a>
+  <a href="../privacy/">隱私權政策</a>
+  <a href="../terms/">服務條款</a>
+  <a href="../support/">客服支援</a>
+</div></nav>
+<main>
+  <h1>隱私權政策</h1>
+  <p class="meta">最後更新日期：2026-08-22 ｜ 生效日期：2026-08-22</p>
+  <p>「工程記工」（以下簡稱「本服務」）由開發者 Ken Tools 提供。本服務處理的是<strong>雇主與其受僱員工之出勤與工資計算資料</strong>，我們重視這些資料的保護，本政策說明我們蒐集、處理、利用與保護資料的方式。</p>
+
+  <h2>1. 本政策適用範圍</h2>
+  <p>本政策適用於您使用「工程記工」iOS 與 Android App 時，所有由您主動輸入、系統自動產生、或第三方服務回傳的資料。</p>
+  <p><strong>請注意：</strong>本服務為 B2B SaaS 工具。使用本服務的公司（雇主）為個資法下之「資料控管者」，本服務僅為受託處理個人資料之機構。員工個人資料的蒐集告知、特定目的與保存年限，由雇主依《個人資料保護法》與《勞動基準法》自行負責。</p>
+
+  <h2>2. 我們蒐集的資料</h2>
+  <h3>2.1 您主動提供的資料</h3>
+  <table>
+    <tr><th>類別</th><th>蒐集項目</th><th>用途</th></tr>
+    <tr><td>帳戶資料</td><td>Email、密碼（加密儲存）</td><td>登入身分驗證</td></tr>
+    <tr><td>公司資料</td><td>公司名稱、流水號前綴</td><td>帳戶識別、記工單編號</td></tr>
+    <tr><td>成員資料</td><td>姓名或暱稱、角色</td><td>多人協作、權限控制</td></tr>
+    <tr><td>員工主檔</td><td>員工姓名、計價單位、單價、有無加班制</td><td>工資計算（僅老闆／會計可見）</td></tr>
+    <tr><td>工地資料</td><td>工地名稱</td><td>記工地點記錄</td></tr>
+    <tr><td>記工資料</td><td>日期、起訖時間、數量、單位、加班數量、備註</td><td>核心業務功能</td></tr>
+  </table>
+  <h3>2.2 系統自動蒐集的資料</h3>
+  <ul>
+    <li><strong>裝置資訊：</strong>作業系統版本、App 版本（用於除錯與相容性）</li>
+    <li><strong>使用紀錄：</strong>記工單建立與送出的時間戳（不含定位）</li>
+    <li><strong>訂閱憑證：</strong>Apple／Google 平台回傳的訂閱憑證 token</li>
+  </ul>
+  <h3>2.3 我們「不」蒐集的資料</h3>
+  <ul>
+    <li>❌ 您的精準位置（GPS）—— 記工不需要打卡定位，本 App 不要求定位權限</li>
+    <li>❌ 相機、相簿、照片 —— 本 App 不上傳任何影像</li>
+    <li>❌ 電子簽名圖片 —— 本 App 沒有簽名功能</li>
+    <li>❌ 身分證字號、銀行帳戶、健保勞保等敏感個資</li>
+    <li>❌ 通訊錄、簡訊、電話紀錄</li>
+    <li>❌ 行為追蹤 cookie／廣告識別碼</li>
+    <li>❌ 第三方分析（無 Google Analytics、無 Facebook SDK）</li>
+  </ul>
+
+  <h2>3. 資料儲存位置與安全</h2>
+  <h3>3.1 雲端儲存</h3>
+  <ul>
+    <li><strong>雲端後端：</strong>Supabase（PostgreSQL 資料庫）</li>
+    <li><strong>資料中心位置：</strong>AWS 東京區域（ap-northeast-1，日本）</li>
+    <li><strong>加密：</strong>傳輸採 TLS 1.2+，靜態資料採 AES-256</li>
+    <li><strong>隔離：</strong>採用 Row Level Security（RLS）多租戶隔離，跨公司資料絕不互通</li>
+    <li><strong>金額隔離：</strong>現場角色（field）在資料庫層即被拒絕讀取員工單價，不只是介面隱藏</li>
+  </ul>
+  <h3>3.2 本機儲存</h3>
+  <ul>
+    <li>記工草稿與待同步資料以 SQLite 儲存於裝置本機 sandbox</li>
+    <li>解除安裝 App 時，本機資料一併刪除</li>
+  </ul>
+  <h3>3.3 跨境傳輸</h3>
+  <p>由於資料儲存於日本東京，使用本服務即表示您同意資料跨境傳輸至日本。日本個人資料保護水準經歐盟認定為適足，與台灣個資法保護程度相當。</p>
+
+  <h2>4. 資料分享與第三方</h2>
+  <p>我們<strong>不販售、不出租</strong>您的資料。僅在下列必要情境分享：</p>
+  <table>
+    <tr><th>對象</th><th>目的</th><th>資料範圍</th></tr>
+    <tr><td>Supabase（AWS）</td><td>雲端後端服務</td><td>全部業務資料</td></tr>
+    <tr><td>Apple／Google</td><td>訂閱付款處理</td><td>訂閱憑證 token（不含業務資料）</td></tr>
+    <tr><td>司法／主管機關</td><td>法律強制要求</td><td>視要求範圍</td></tr>
+  </table>
+
+  <h2>5. 資料保留期間</h2>
+  <ul>
+    <li>帳戶有效期間：持續保留</li>
+    <li>解約後：90 天後自動永久刪除（含雲端與備份）</li>
+    <li><strong>提醒雇主：</strong>勞工出勤紀錄依《勞動基準法》第 30 條規定應保存五年。本服務不代雇主履行該保存義務，請於解約前自行匯出 Excel 留存</li>
+    <li>您可隨時要求提前刪除，請寄信至下方聯絡 Email</li>
+  </ul>
+
+  <h2>6. 刪除帳號</h2>
+  <p>您可在 App 內「設定 → 刪除帳號」自助永久刪除帳號，不需來信申請。刪除規則：</p>
+  <ul>
+    <li>若您是公司的<strong>老闆（owner）</strong>：連同整家公司的記工、員工主檔、工地、成員與訂閱紀錄一併永久刪除</li>
+    <li>若您是<strong>會計或現場人員</strong>：僅刪除您的帳號；您先前建立的記工屬於公司資產，會轉移至該公司老闆名下保留</li>
+    <li>此操作<strong>不可復原</strong>，App 內需二次確認才會執行</li>
+  </ul>
+
+  <h2>7. 您的權利</h2>
+  <p>依《個人資料保護法》第 3 條，員工可向雇主（使用本服務的公司）請求：查閱、閱覽副本；補充、更正；停止蒐集、處理、利用；刪除。請透過所屬公司提出，或寄信至本服務聯絡 Email 申訴。</p>
+
+  <h2>8. 兒童隱私</h2>
+  <p>本服務為企業工具，不適用於 13 歲以下兒童，亦不對其行銷。</p>
+
+  <h2>9. 訂閱與付款</h2>
+  <ul>
+    <li>月訂閱 NT$500／月（iOS 為 NT$490），透過 Apple App Store 或 Google Play 內購買</li>
+    <li>付款資料由 Apple／Google 處理，我們不接觸您的信用卡資訊</li>
+    <li>30 天免費試用，過期後進入唯讀模式（資料仍可查看與匯出）</li>
+  </ul>
+
+  <h2>10. 政策變更</h2>
+  <p>本政策如有修訂，將於 App 內公告，重大變更將以 Email 通知。繼續使用本服務視為同意修訂後政策。</p>
+
+  <h2>11. 聯絡資訊</h2>
+  <ul>
+    <li><strong>服務名稱：</strong>工程記工</li>
+    <li><strong>開發者：</strong>Ken Tools</li>
+    <li><strong>聯絡 Email：</strong><a href="mailto:epken935035@gmail.com">epken935035@gmail.com</a></li>
+    <li><strong>服務地點：</strong>台灣</li>
+  </ul>
+  <blockquote>本政策以繁體中文版為準。如有翻譯版本與本版本不符，以繁體中文版為準。</blockquote>
+</main>
+<footer class="site"><div class="wrap">© 2026 Ken Tools · 工程記工</div></footer>
+</body>
+</html>
