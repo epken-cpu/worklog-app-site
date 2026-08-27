@@ -1,4 +1,4 @@
-# 工程記工 — 上架用公開網站（GitHub Pages）
+# 記工e指算 — 上架用公開網站（GitHub Pages）
 
 這個資料夾就是要發佈到 GitHub Pages 的靜態網站，提供 App Store / Play Console 要求的公開網址：
 
@@ -22,7 +22,7 @@
 cd "C:\Users\Ken\Ken agent\workspace\Engineering\worklog_app\site"
 git init
 git add .
-git commit -m "工程記工 上架公開頁：隱私權／條款／客服"
+git commit -m "記工e指算 上架公開頁：隱私權／條款／客服"
 git branch -M main
 git remote add origin https://github.com/epken-cpu/worklog-app-site.git
 git push -u origin main

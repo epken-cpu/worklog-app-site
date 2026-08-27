@@ -1,4 +1,4 @@
-/* 工程記工 公開站樣式
+/* 記工e指算 公開站樣式
    主色 #0D9488（方案 B-3 定稿 2026-08-22），與 App icon / app_theme.dart 同色。
    要改主色的話四個地方一起改：這裡、app/pubspec.yaml、app/lib/core/theme/app_theme.dart、
    design/store_screenshots/*.html。 */
