@@ -1,0 +1,61 @@
+# 記工e指算的 Supabase 後端保活
+#
+# 為什麼要這個：Free 方案的專案「閒置 7 天」會被自動暫停（2026-09-19 真的發生過一次，
+# 後端整個連不上）。上架期間被暫停的代價很高——封閉測試的人打不開 App、
+# Apple 審查員用 demo 帳號登入也會連不上直接退件。
+#
+# 做法：每天打一次 GoTrue health（證明專案活著）＋ 一支 PostgREST 查詢（真的碰到 Postgres），
+# 讓專案不算閒置。跑在 GitHub 雲端，不依賴任何一台電腦有沒有開機。
+#
+# 🔴 為什麼判斷式收 401：`work_logs` 對 anon 是關的（RLS 之外還沒 grant），
+# 只帶 anon key 會拿到 Postgres 的 `42501 permission denied` —— 那個錯誤是**資料庫發出來的**，
+# 正好證明請求真的打到 DB 了，所以 200 與 401 都算活著。
+# 反而 404 `PGRST205 schema cache` 要當失敗：那是 restore 還沒完成或 schema 掉了。
+# （不要用 `/rest/v1/` 根路徑，2026-09-19 實測它只收 service_role，anon 一律 401 Invalid API key，
+#  那個 401 是閘道發的、碰不到 DB，當保活沒有意義。）
+#
+# 需要的 repo secrets（Settings → Secrets and variables → Actions）：
+#   SUPABASE_URL       例：https://iwrycmrhzmcxbibdgodo.supabase.co
+#   SUPABASE_ANON_KEY  app/.env.local 裡同名那行（Legacy JWT 格式，eyJhbG... 開頭）
+#
+# 🔴 兩個 header 都要帶：閘道強制要 Authorization，只帶 apikey 會被擋在函式之前回 401。
+name: Supabase keep-alive
+
+on:
+  schedule:
+    # 每天 00:17 UTC = 台灣 08:17。挑非整點，避開 GitHub 排程的尖峰延遲。
+    - cron: '17 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_ANON_KEY:-}" ]; then
+            echo "::error::SUPABASE_URL 或 SUPABASE_ANON_KEY 這兩個 repo secret 沒設，保活等於沒跑"
+            exit 1
+          fi
+
+          ping() {
+            curl -sS -o /tmp/body -w '%{http_code}'               -H "apikey: ${SUPABASE_ANON_KEY}"               -H "Authorization: Bearer ${SUPABASE_ANON_KEY}"               --max-time 30 --retry 3 --retry-delay 10 --retry-all-errors               "${SUPABASE_URL}$1"
+          }
+
+          health=$(ping "/auth/v1/health")
+          echo "auth health -> HTTP ${health}"
+          if [ "${health}" != "200" ]; then
+            echo "::error::專案沒有回應（HTTP ${health}）。多半是已經被自動暫停了，去 Dashboard 按 Resume project"
+            exit 1
+          fi
+
+          rest=$(ping "/rest/v1/work_logs?select=id&limit=1")
+          echo "postgrest -> HTTP ${rest}: $(head -c 200 /tmp/body)"
+          case "${rest}" in
+            200|401) echo "DB 有回應，保活成功" ;;
+            *) echo "::error::PostgREST 異常（HTTP ${rest}）。404 PGRST205 = restore 還沒完成或 schema 掉了"; exit 1 ;;
+          esac
